@@ -6,7 +6,12 @@
  * if you did something besides the standard Makefile.
  *
  * Group Members: Ian Buitrago
+ 9-30-2013
+CS 354: Computer Graphics 
+Project 1: Rendering 3D Objects Using OpenGL and GLUT 
  
  commands:	make
+ 
+ 
  */
 

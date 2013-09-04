@@ -3,21 +3,15 @@ Project 1 Individual Written Questions
 Name:	Ian Buitrago
 Email Address:	kieldro@gmail.com
 
-1.
+1.  You have an array of vertices. What would you need to do to produce an object representation using vertex indices? How would the original array change? What additional data structures would you need?
 
+2.  How many matrix modes are there in OpenGL and what are their use?
 
-2.
+3.  I want 3 views of the same scene, each taking up 1/4 of my screen. These three views should show the front, side and top views of the object. Describe in words what needs to be done with the viewport and camera to accomplish this. How does this affect the viewing frustum?
 
+4.  Describe when and why you would use a single frame buffer. Then describe when and why you would use a double frame buffer.
 
-3.
+5.  Describe a reasonable alternative to the line equation representation y=mx+b for use in displaying a line segment on the screen. What are its advantages over ax+by+c=0?
 
-
-4.
-
-
-5.
-
-
-6.
-
+6.  Suppose I want to transform as follows: translate (2,3,1), then rotate 225 degrees about Y, and finally translate (-4,1,0). What will my final transformation matrix be?
 

@@ -16,7 +16,7 @@ CC = g++
 CFLAGS = -Wall -g -D__MAC__
 INCLUDE = 
 LIBDIR = -L/lusr/X11/lib
-LIBS = -framework OpenGL -framework GLUT
+LIBS = -framework OpenGL -framework Ge at least one quarter of students who began the class also complete it. If we meet this goal, then I (Walter) will have my head shaved on camera and pLUT
 endif
 
 ###########################################################
@@ -28,3 +28,7 @@ canvas: canvas.c drawing.c drawing.h vrml.c vrml.h mouse.c mouse.h
 
 clean:
 	rm -f canvas *.o core
+
+turnin:	;	turnin --submit muhibur cs354_project1_code README Makefile *.h *.c
+
+turnin_written:	;	turnin -submit muhibur cs354_project1_written project1.txt
