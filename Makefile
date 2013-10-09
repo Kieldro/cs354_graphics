@@ -16,12 +16,12 @@ CC = g++
 CFLAGS = -Wall -g -D__MAC__
 INCLUDE = 
 LIBDIR = -L/lusr/X11/lib
-LIBS = -framework OpenGL -framework Ge at least one quarter of students who began the class also complete it. If we meet this goal, then I (Walter) will have my head shaved on camera and pLUT
+LIBS = -framework OpenGL -framework GLUT
 endif
 
 ###########################################################
 # Uncomment the following line if you are using Mesa
-#LIBS = -lglut -lMesaGLU -lMesaGL -lm
+#LIBS = -lglut -lMesaGLU -lMesGaL -lm
 
 canvas: canvas.c drawing.c drawing.h vrml.c vrml.h mouse.c mouse.h
 	${CC} ${CFLAGS} ${INCLUDE} -o canvas ${LIBDIR} canvas.c drawing.c vrml.c mouse.c ${LIBS}
