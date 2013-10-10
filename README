@@ -10,10 +10,12 @@
 CS 354: Computer Graphics 
 Project 1: Rendering 3D Objects Using OpenGL and GLUT 
  
- commands:	make
+commands:	make
  
- remarks:
+remarks:
 UTF byte order mark <feff> caused a delay with installing glut. :set list in vim to view it
 sudo apt-get install freeglut3-dev  // to install glut
 
+questions:
+-glutKeyboardFunc(myKeyHandler); // is this a first class function?
  */

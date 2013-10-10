@@ -4,7 +4,7 @@
  * Implements a canvas with multiple display modes.
  * Starter code for Project 1.
  *
- * Group Members: <FILL IN>
+ * Group Members: Ian Buitrago
  */
 
 #include "common.h"
@@ -15,6 +15,13 @@
 #include "drawing.h"
 #include "vrml.h"
 #include "mouse.h"
+
+// C++ headers
+#include <iostream>
+#include <typeinfo>
+
+using std::cerr;
+using std::endl;
 
 /* Function Declarations */
 void myInit (int argc, char **argv);
@@ -31,8 +38,10 @@ void initLighting(void);
 /* The current vrml object */
 int vr_object;
 
+// macros
 #define FALSE		0
 #define TRUE		1
+#define DEBUG		1
 
 /*************************************************************
  * Global Variables / Constants
@@ -44,8 +53,8 @@ int vr_object;
 
 
 /* The canvas's width and height, in pixels */
-int win_width = 500;
-int win_height = 500;
+const int win_width = 500;
+const int win_height = 500;
 
 
 /* The dimensions of the viewing frustum */
@@ -409,12 +418,12 @@ int main(int argc, char **argv)
 
 	/* Set initial window size and screen offset */
 	glutInitWindowSize(win_width, win_height);
-	glutInitWindowPosition(50, 50);
+	glutInitWindowPosition(1200, 200);
 
 	/* Using: RGB (no alpha), double buffering, z-buffer */
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
-	glutCreateWindow("Canvas");
+	glutCreateWindow("Canvas of Keo");
 
 	/* Set the function callbacks */
 	glutDisplayFunc(myDisplay);
@@ -422,6 +431,8 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(myKeyHandler);
 	glutMouseFunc(myMouseButton);
 	glutMotionFunc(myMouseMotion);
+	if(DEBUG) cerr << "BOOYAKASHA  = " << typeid(myKeyHandler).name() << endl;
+	// if(DEBUG)fprintf(stderr, "BOOYAKASHA  = %s\n", typeid(myKeyHandler));
 
 	/* User specific initialization */
 	myInit(argc, argv);

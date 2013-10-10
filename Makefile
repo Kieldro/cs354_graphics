@@ -1,7 +1,7 @@
 ###########################################################
 # Project 1 Makefile
 
-CC = gcc
+CC = g++
 CFLAGS = -Wall -ggdb
 INCLUDE = -I/usr/include
 LIBDIR = -L/usr/lib/x86_64-linux-gnu
@@ -23,8 +23,11 @@ endif
 # Uncomment the following line if you are using Mesa
 #LIBS = -lglut -lMesaGLU -lMesGaL -lm
 
-canvas: canvas.c drawing.c drawing.h vrml.c vrml.h mouse.c mouse.h
-	${CC} ${CFLAGS} ${INCLUDE} -o canvas ${LIBDIR} canvas.c drawing.c vrml.c mouse.c ${LIBS}
+all: canvas
+	./canvas
+
+canvas: canvas.c++ drawing.c drawing.h vrml.c vrml.h mouse.c mouse.h
+	${CC} ${CFLAGS} ${INCLUDE} -o canvas ${LIBDIR} canvas.c++ drawing.c vrml.c mouse.c ${LIBS}
 
 clean:
 	rm -f canvas *.o core
