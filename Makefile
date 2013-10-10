@@ -26,8 +26,12 @@ endif
 all: canvas
 	./canvas
 
-canvas: canvas.c++ drawing.c drawing.h vrml.c vrml.h mouse.c mouse.h
-	${CC} ${CFLAGS} ${INCLUDE} -o canvas ${LIBDIR} canvas.c++ drawing.c vrml.c mouse.c ${LIBS}
+canvas: canvas.c++ drawing.c++ drawing.h vrml.c vrml.h mouse.c mouse.h 
+	${CC} ${CFLAGS} ${INCLUDE} -o canvas ${LIBDIR} canvas.c++ drawing.c++ vrml.c mouse.c ${LIBS}
+
+hello:
+	$(CC) hello.c++ $(INCLUDE) $(LIBDIR) $(LIBS)
+	./a.out 1 2
 
 clean:
 	rm -f canvas *.o core

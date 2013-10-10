@@ -7,7 +7,7 @@
  *
  * Starter code for Project 1.
  *
- * Group Members: <FILL IN>
+ * Group Members: Ian Buitrago
  */
 
 #include "common.h"
@@ -233,7 +233,12 @@ void draw_cube_quad_arrays(void) {
  */
 void draw_cone_glut(void) {
 	/* ADD YOUR CODE HERE */
-
+    // glColor3f(1.0f, 0.0f, 0.0f);
+    // if (disp_style == DS_SOLID) {
+    //     glutSolidCube(1.0f);
+    // } else if (disp_style == DS_WIRE) {
+    //     glutWireCube(1.0f);
+    // }
 }
 
 /*

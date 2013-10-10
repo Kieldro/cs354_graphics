@@ -423,7 +423,7 @@ int main(int argc, char **argv)
 	/* Using: RGB (no alpha), double buffering, z-buffer */
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
-	glutCreateWindow("Canvas of Keo");
+	glutCreateWindow("Canvas for project 1");
 
 	/* Set the function callbacks */
 	glutDisplayFunc(myDisplay);
