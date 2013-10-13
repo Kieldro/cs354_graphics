@@ -1,6 +1,7 @@
 // for Linux
 #include <GL/gl.h>
 #include <GL/glut.h>	// find with `sudo updatedb; locate glut.h`	
+#include <iostream>
 
 double angle = 0;
 
@@ -24,7 +25,7 @@ void foo_renderScene(void) {
 		glVertex3f( 0.0f, 2.0f, 0.0);
 	glEnd();
 
-	angle += 0.1f;
+	angle += 0.3f;
 
 	glutSwapBuffers();
 }

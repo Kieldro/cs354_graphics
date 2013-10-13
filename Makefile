@@ -1,16 +1,14 @@
-###########################################################
-# Project 1 Makefile
-
-CC = g++
-CFLAGS = -Wall -ggdb
+# CC = g++
+CXXFLAGS += -Wall -ggdb
 INCLUDE = -I/usr/include
 LIBDIR = -L/usr/lib/x86_64-linux-gnu
 # Libraries that use native graphics hardware --
 LIBS = -lglut -lGLU -lGL -lpthread -lm
+RM := rm -f
 
 ###########################################################
 # Options if compiling on Mac
-UNAME := $(shell uname)
+UNAME := $(shell uname)		# immediate evalutation																									
 ifeq ($(UNAME), Darwin)
 CC = g++
 CFLAGS = -Wall -g -D__MAC__
@@ -19,23 +17,42 @@ LIBDIR = -L/lusr/X11/lib
 LIBS = -framework OpenGL -framework GLUT
 endif
 
-###########################################################
 # Uncomment the following line if you are using Mesa
 #LIBS = -lglut -lMesaGLU -lMesGaL -lm
-
+###########################################################
 all: canvas
-	./canvas
+	$(PROJECTDIR1)/canvas
 
-canvas: canvas.c++ drawing.c++ drawing.h vrml.c vrml.h mouse.c mouse.h 
-	${CC} ${CFLAGS} ${INCLUDE} -o canvas ${LIBDIR} canvas.c++ drawing.c++ vrml.c mouse.c ${LIBS}
+check: canvas
+	# run unit tests
 
 hello:
-	$(CC) hello.c++ $(INCLUDE) $(LIBDIR) $(LIBS)
+	$(CXX) hello.c++ $(INCLUDE) $(LIBDIR) $(LIBS)
 	./a.out 1 2
 
 clean:
-	rm -f canvas *.o core
+	@- $(RM) canvas *.o core		# run silently and ignore errors
 
-turnin:	;	turnin --submit muhibur cs354_project1_code README Makefile *.h *.c
+###########################################################
+# Project 1
+PROJECTDIR1 := ./project1
+p1_SRCS := $(shell find $(PROJECTDIR1) -regextype egrep -regex ".+\.c(\+\+)?")
+p1_HEADERS := $(wildcard $(PROJECTDIR1)/*.h)
+canvas: $(p1_SRCS) $(p1_HEADERS)
+	echo $(p1_SRCS)
+	${CXX} ${CXXFLAGS} ${INCLUDE} -o canvas ${LIBDIR} $(p1_SRCS) ${LIBS}
 
-turnin_written:	;	turnin -submit muhibur cs354_project1_written project1.txt
+turnin:	;	turnin --submit muhibur cs354_project1_code README Makefile $(p1_SRCS) $(p1_HEADERS)
+
+turnin_written:	;	turnin --submit muhibur cs354_project1_written project1.txt
+	
+# PROJECTDIR = project1
+
+# include ./project1/Makefile
+
+
+
+###########################################################
+# Project 2
+plant: drawplant.cpp drawplant.h plant.cpp readppm.cpp
+	${CXX} ${CXXFLAGS} ${INCLUDE} -o plant ${LIBDIR} drawplant.cpp plant.cpp readppm.cpp ${LIBS}
