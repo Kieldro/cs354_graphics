@@ -11,11 +11,10 @@
  */
 
 #include "common.h"
-
-#include <stdio.h>
-
 #include "drawing.h"
 #include "vrml.h"
+
+#include <stdio.h>
 
 /* The current display mode */
 int disp_mode;

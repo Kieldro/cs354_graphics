@@ -8,20 +8,22 @@
  */
 
 #include "common.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "drawing.h"
 #include "vrml.h"
 #include "mouse.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 // C++ headers
 #include <iostream>
 #include <typeinfo>
+#include <vector>
+#include <cassert>
 
 using std::cerr;
 using std::endl;
+using std::vector;
 
 /* Function Declarations */
 void myInit (int argc, char **argv);
@@ -79,13 +81,11 @@ GLfloat zoomFactor = 1.0;
  * End Global Variables / Constants
  *************************************************************/
 
-
-
 /* Begin function definitions */
 
 /*
  * Performs specific initializations for this program (as opposed to
- * glut initialization.
+ * glut initialization).
  */
 void myInit (int argc, char **argv) {
 	/* Set the default display mode and style */
@@ -111,44 +111,54 @@ void myDisplay (void) {
 	/* Clear the pixels (aka colors) and the z-buffer */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	switch (disp_mode) {
-		case DM_CUBE_GLUT:
-			draw_cube_glut();
-			break;
-		case DM_CUBE_QUAD:
-			draw_cube_quad();
-			break;
-		case DM_CUBE_QUAD_ARRAYS:
-			draw_cube_quad_arrays();
-			break;
-		case DM_CONE_GLUT:
-			draw_cone_glut();
-			break;
-		case DM_CONE_TRI:
-			draw_cone_tri();
-			break;
-		case DM_CONE_TRI_ARRAYS:
-			draw_cone_tri_arrays();
-			break;
-		case DM_CONE_TRI_CALC:
-			/*
-			 * NOTE
-			 * ----
-			 * This call will need to be changed to use the user-specified
-			 * parameters.  Right now, hard coded parameters are used.
-			 */
-			draw_cone_tri_calc(0.0, 0.0, 0);
-			break;
-		case DM_VRML:
-			draw_vrml();
-			break;
-		case DM_FREE_SCENE:
-			draw_free_scene();
-			break;
-		default:
-			printf("myDisplay Warning: unrecognized Display Mode\n");
-			break;
-	}
+	vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad, 
+		draw_cube_quad_arrays, draw_cone_tri, draw_cone_tri, draw_cone_tri_arrays, 
+		NULL, draw_vrml, draw_free_scene};
+	
+	assert(disp_mode >= 0 and disp_mode < DM_MAX);
+	if(disp_mode == DM_CONE_TRI_CALC)
+		
+			 // * NOTE
+			 // * ----
+			 // * This call will need to be changed to use the user-specified
+			 // * parameters.  Right now, hard coded parameters are used.
+		draw_cone_tri_calc(0.0, 0.0, 0);
+	else
+		functionTable[disp_mode]();
+	
+	// switch (disp_mode) {
+	// 	case DM_CUBE_GLUT:
+	// 		draw_cube_glut();
+	// 		break;
+	// 	case DM_CUBE_QUAD:
+	// 		draw_cube_quad();
+	// 		break;
+	// 	case DM_CUBE_QUAD_ARRAYS:
+	// 		draw_cube_quad_arrays();
+	// 		break;
+	// 	case DM_CONE_GLUT:
+	// 		draw_cone_glut();
+	// 		break;
+	// 	case DM_CONE_TRI:
+	// 		draw_cone_tri();
+	// 		break;
+	// 	case DM_CONE_TRI_ARRAYS:
+	// 		draw_cone_tri_arrays();
+	// 		break;
+	// 	case DM_CONE_TRI_CALC:
+			 
+	// 		draw_cone_tri_calc(0.0, 0.0, 0);
+	// 		break;
+	// 	case DM_VRML:
+	// 		draw_vrml();
+	// 		break;
+	// 	case DM_FREE_SCENE:
+	// 		draw_free_scene();
+	// 		break;
+	// 	default:
+	// 		printf("myDisplay Warning: unrecognized Display Mode\n");
+	// 		break;
+	// }
 
 	glFlush();	/* Flush all executed OpenGL ops finish */
 

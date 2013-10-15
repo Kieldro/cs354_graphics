@@ -1,4 +1,4 @@
-CXXFLAGS += -Wall -ggdb
+CXXFLAGS += -Wall -ggdb -std=c++11# used for vector brace initialization
 INCLUDE = -I/usr/include
 LIBDIR = -L/usr/lib/x86_64-linux-gnu
 # Libraries that use native graphics hardware --
@@ -40,7 +40,6 @@ p1_SRCS := $(shell find $(PROJECTDIR1) -regextype egrep -regex ".+\.c(\+\+)?")
 p1_HEADERS := $(wildcard $(PROJECTDIR1)/*.h)
 
 canvas: $(p1_HEADERS) $(p1_SRCS)
-	echo $(p1_SRCS)
 	${CXX} ${CXXFLAGS} ${INCLUDE} -o canvas ${LIBDIR} $(p1_SRCS) ${LIBS}
 
 turnin:	;	turnin --submit muhibur cs354_project1_code README Makefile $(p1_SRCS) $(p1_HEADERS)
