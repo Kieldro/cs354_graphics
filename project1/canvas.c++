@@ -15,16 +15,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// C++ headers
-#include <iostream>
-#include <typeinfo>
-#include <vector>
-#include <cassert>
-
-using std::cerr;
-using std::endl;
-using std::vector;
-
 /* Function Declarations */
 void myInit (int argc, char **argv);
 
@@ -40,11 +30,6 @@ void initLighting(void);
 /* The current vrml object */
 int vr_object;
 
-// macros
-#define FALSE		0
-#define TRUE		1
-#define DEBUG		1
-
 /*************************************************************
  * Global Variables / Constants
  * ----------------------------
@@ -58,6 +43,7 @@ int vr_object;
 const int win_width = 500;
 const int win_height = 500;
 
+double r = 1.0;
 
 /* The dimensions of the viewing frustum */
 GLfloat fleft   = -1.0;
@@ -71,6 +57,10 @@ GLfloat zFar    = -7.0;
 /* Global zoom factor.  Modified by user input. Initially 1.0 */
 GLfloat zoomFactor = 1.0; 
 
+// function look up table mapping drawing modes to respective functions
+const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad, 
+		draw_cube_quad_arrays, draw_cone_glut, draw_cone_tri, draw_cone_tri_arrays, 
+		NULL, draw_vrml, draw_free_scene};
 
 /* Constants for specifying the 3 coordinate axes */
 #define X_AXIS			0
@@ -89,8 +79,8 @@ GLfloat zoomFactor = 1.0;
  */
 void myInit (int argc, char **argv) {
 	/* Set the default display mode and style */
-	disp_mode = DM_CUBE_GLUT;
-	disp_style = DS_SOLID;
+	disp_mode = DM_CONE_GLUT;
+	disp_style = DS_WIRE;
 
 	/* Set up a black background */
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -111,54 +101,15 @@ void myDisplay (void) {
 	/* Clear the pixels (aka colors) and the z-buffer */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad, 
-		draw_cube_quad_arrays, draw_cone_tri, draw_cone_tri, draw_cone_tri_arrays, 
-		NULL, draw_vrml, draw_free_scene};
-	
 	assert(disp_mode >= 0 and disp_mode < DM_MAX);
 	if(disp_mode == DM_CONE_TRI_CALC)
-		
-			 // * NOTE
-			 // * ----
-			 // * This call will need to be changed to use the user-specified
-			 // * parameters.  Right now, hard coded parameters are used.
+		// * NOTE
+		// * ----
+		// * This call will need to be changed to use the user-specified
+		// * parameters.  Right now, hard coded parameters are used.
 		draw_cone_tri_calc(0.0, 0.0, 0);
 	else
 		functionTable[disp_mode]();
-	
-	// switch (disp_mode) {
-	// 	case DM_CUBE_GLUT:
-	// 		draw_cube_glut();
-	// 		break;
-	// 	case DM_CUBE_QUAD:
-	// 		draw_cube_quad();
-	// 		break;
-	// 	case DM_CUBE_QUAD_ARRAYS:
-	// 		draw_cube_quad_arrays();
-	// 		break;
-	// 	case DM_CONE_GLUT:
-	// 		draw_cone_glut();
-	// 		break;
-	// 	case DM_CONE_TRI:
-	// 		draw_cone_tri();
-	// 		break;
-	// 	case DM_CONE_TRI_ARRAYS:
-	// 		draw_cone_tri_arrays();
-	// 		break;
-	// 	case DM_CONE_TRI_CALC:
-			 
-	// 		draw_cone_tri_calc(0.0, 0.0, 0);
-	// 		break;
-	// 	case DM_VRML:
-	// 		draw_vrml();
-	// 		break;
-	// 	case DM_FREE_SCENE:
-	// 		draw_free_scene();
-	// 		break;
-	// 	default:
-	// 		printf("myDisplay Warning: unrecognized Display Mode\n");
-	// 		break;
-	// }
 
 	glFlush();	/* Flush all executed OpenGL ops finish */
 
@@ -338,7 +289,7 @@ void myKeyHandler(unsigned char ch, int x, int y) {
 
 		case 'D':
 			/* Cycle through the various display modes backwards */
-			/* By adding DM_MAX, the args to "%" wil never be negative */
+			/* By adding DM_MAX, the args to "%" will never be negative */
 			disp_mode = (disp_mode + DM_MAX - 1) % DM_MAX;
 			print_disp_mode();
 			break;
@@ -385,6 +336,17 @@ void myKeyHandler(unsigned char ch, int x, int y) {
 		case 't':
 			performanceTest();
 			break;
+		case 'I':
+			r += .1;
+			cout << "r set to " << r << " (calculated triangulation only)" << endl;
+			break;
+		case 'i':
+			r -= .1;
+			cout << "r set to " << r << " (calculated triangulation only)" << endl;
+			break;
+// r - Initially set to 1.0.  Set 'I' to increase r by 0.1, and set 'i' to decrease r by 0.1.  Your program must make sure that r is kept greater than or equal to 0.1.
+// h - Initially set to 1.0.  Set 'O' to increase h by 0.1, and set 'o' to decrease h by 0.1.  Your program must make sure that h is kept greater than or equal to 0.1.
+// n - Initially set to 8.  Set 'P' to increase n by 1 and set 'p' to decrease n by 1.  Your program must make sure that n is kept greater than or equal to 3.
 
 		case 'q':
 			/* Quit with exit code 0 */
@@ -426,7 +388,7 @@ int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
 
-	/* Set initial window size and screen offset */
+	// Set initial window size and screen offset 
 	glutInitWindowSize(win_width, win_height);
 	glutInitWindowPosition(1200, 200);
 
@@ -441,7 +403,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(myKeyHandler);
 	glutMouseFunc(myMouseButton);
 	glutMotionFunc(myMouseMotion);
-	if(DEBUG) cerr << "BOOYAKASHA  = " << typeid(myKeyHandler).name() << endl;
+	if(DEBUG) cerr << "BOOYAKASHA  = " << sizeof(float) << endl;
 	// if(DEBUG)fprintf(stderr, "BOOYAKASHA  = %s\n", typeid(myKeyHandler));
 
 	/* User specific initialization */

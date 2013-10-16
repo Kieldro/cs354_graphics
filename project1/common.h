@@ -12,4 +12,21 @@
 #include <GL/glut.h>
 #endif
 
+// C++ headers
+#include <iostream>
+#include <typeinfo>
+#include <vector>
+#include <string>
+#include <cassert>
+
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::vector;
+using std::string;
+
+// macros
+#define DEBUG   1
+
+
 #endif

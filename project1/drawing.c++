@@ -16,6 +16,11 @@
 
 #include <stdio.h>
 
+const string modeStrings[] = {"Cube using glut", "Cube using quadrilaterals", 
+  "Cube using quadrilateral arrays", "Cone using glut", 
+  "Cone using triangles", "Cone using triangle arrays", 
+  "Cone using calculated triangles", "VRML objects", "Freeform scene"};
+
 /* The current display mode */
 int disp_mode;
 
@@ -67,12 +72,12 @@ GLfloat cube_colors[] = {
  * appear in counterclockwise order).
  */
 GLuint cube_indices[] = {
-    0, 2, 3, 1,
-    2, 6, 7, 3,
-    7, 6, 4, 5,
-    4, 0, 1, 5,
-    1, 3, 7, 5,
-    0, 4, 6, 2,
+  0, 2, 3, 1,
+  2, 6, 7, 3,
+  7, 6, 4, 5,
+  4, 0, 1, 5,
+  1, 3, 7, 5,
+  0, 4, 6, 2,
 };
 /***********************************************************
  * End Cube Data
@@ -152,12 +157,12 @@ GLuint cone_indices[] = {
 void draw_cube_glut(void) {
 	/* Draw the cube using glut */
 
-	glColor3f(1.0f, 0.0f, 0.0f);
-	if (disp_style == DS_SOLID) {
-		glutSolidCube(1.0f);
-	} else if (disp_style == DS_WIRE) {
-		glutWireCube(1.0f);
-	}
+  glColor3f(1.0, 0.0f, 0.0f);
+  if (disp_style == DS_SOLID) {
+    glutSolidCube(1.0f);
+  } else if (disp_style == DS_WIRE) {
+    glutWireCube(1.0f);
+  }
 }
 
 /*
@@ -165,44 +170,31 @@ void draw_cube_glut(void) {
  * Iteratively draws each quad in the cube.
  */
 void draw_cube_quad(void) {
-	int num_indices;
-	int i;
-	int index1, index2, index3, index4;
+  int num_indices = sizeof(cube_indices) / sizeof(GLuint);
 
-	num_indices = sizeof(cube_indices) / sizeof(GLuint);
+  /*
+   * Loop over all quads that need to be drawn.
+   * Step i by 4 because there are 4 vertices per quad.
+   */
+  for (int i = 0; i < num_indices; i += 4) {
+    /*
+     * Find the index into the vertex array.  The value
+     * in the cube_indices array refers to the index
+     * of the ordered triples, not the index for the
+     * actual GLfloats that comprise the cube_vertices array.
+     * Thus, we need to multiple by 3 to get the real index.
+     */
 
-	/*
-	 * Loop over all quads that need to be draen.
-	 * Step i by 4 because there are 4 vertices per quad.
-	 */
-	for (i = 0; i < num_indices; i += 4) {
-		/*
-		 * Find the index into the vertex array.  The value
-		 * in the cube_indices array refers to the index
-		 * of the ordered triples, not the index for the
-		 * actual GLfloats that comprise the cube_vertices array.
-		 * Thus, we need to multiple by 3 to get the real index.
-		 */
-		index1 = cube_indices[i] * 3;
-		index2 = cube_indices[i+1] * 3;
-		index3 = cube_indices[i+2] * 3;
-		index4 = cube_indices[i+3] * 3;
+    glBegin(GL_QUADS);
 
-		glBegin(GL_QUADS);
-
-		/* All arguments here are pointers */
-		glColor3fv(  &(cube_colors[index1]) );
-		glVertex3fv( &(cube_vertices[index1]) );
-		glColor3fv(  &(cube_colors[index2]) );
-		glVertex3fv( &(cube_vertices[index2]) );
-		glColor3fv(  &(cube_colors[index3]) );
-		glVertex3fv( &(cube_vertices[index3]) );
-		glColor3fv(  &(cube_colors[index4]) );
-		glVertex3fv( &(cube_vertices[index4]) );
-
-		glEnd();
-
-	}
+    /* All arguments here are pointers */
+    for(int j = 0; j < 4; ++j){
+      int index = cube_indices[i + j] * 3;
+      glColor3fv (&(cube_colors  [index]) );
+      glVertex3fv(&(cube_vertices[index]) );
+    }
+    glEnd();
+  }
 }
 
 /*
@@ -210,20 +202,19 @@ void draw_cube_quad(void) {
  * Uses GL's vertex arrays, index arrays, color arrays, etc.
  */
 void draw_cube_quad_arrays(void) {
-	int num_indices;
+  int num_indices = sizeof(cube_indices) / sizeof(GLuint);
 
-	num_indices = sizeof(cube_indices) / sizeof(GLuint);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
+  glVertexPointer(3, GL_FLOAT, 0, cube_vertices);
+  glColorPointer(3, GL_FLOAT, 0, cube_colors);
+  glDrawElements(GL_QUADS, num_indices,
+          GL_UNSIGNED_INT, cube_indices);
 
-	glVertexPointer(3, GL_FLOAT, 0, cube_vertices);
-	glColorPointer(3, GL_FLOAT, 0, cube_colors);
-	glDrawElements(GL_QUADS, num_indices,
-					GL_UNSIGNED_INT, cube_indices);
-
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  if(DEBUG) cerr << "BOOYAKASHA  = " << 11 << endl;
 }
 
 /*
@@ -231,13 +222,18 @@ void draw_cube_quad_arrays(void) {
  * frame modes, based on the value of the variable disp_style.
  */
 void draw_cone_glut(void) {
-	/* ADD YOUR CODE HERE */
-    // glColor3f(1.0f, 0.0f, 0.0f);
-    // if (disp_style == DS_SOLID) {
-    //     glutSolidCube(1.0f);
-    // } else if (disp_style == DS_WIRE) {
-    //     glutWireCube(1.0f);
-    // }
+  // if(DEBUG) cerr << "BOOYAKASHA  = " << 7 << endl;
+  float radius = 1;
+  float height = 2;
+  int slices = 8;
+  int stacks = 1;
+  
+  glColor3f(0, 0.0f, 1);
+  if (disp_style == DS_SOLID) {
+    glutSolidCone(radius, height, slices, stacks);
+  }else if (disp_style == DS_WIRE) {
+    glutWireCone(radius, height, slices, stacks);
+  }
 }
 
 /*
@@ -245,7 +241,30 @@ void draw_cone_glut(void) {
  * Iteratively draws each triangle in the cone.
  */
 void draw_cone_tri(void) {
-	/* ADD YOUR CODE HERE */
+  int num_indices = sizeof(cone_indices) / sizeof(GLuint);
+  /*
+   * Loop over all tris that need to be drawn.
+   * Step i by 3 because there are 3 vertices per triangle.
+   */
+  for (int i = 0; i < num_indices; i += 3) {
+    /*
+     * Find the index into the vertex array.  The value
+     * in the cone_indices array refers to the index
+     * of the ordered triples, not the index for the
+     * actual GLfloats that comprise the cone_vertices array.
+     * Thus, we need to multiple by 3 to get the real index.
+     */
+
+    glBegin(GL_TRIANGLES);
+
+    /* All arguments here are pointers */
+    for(int j = 0; j < 3; ++j){
+      int index = cone_indices[i + j] * 3;
+      glColor3fv (&(cone_colors  [index]) );
+      glVertex3fv(&(cone_vertices[index]) );
+    }
+    glEnd();
+  }
 
 }
 
@@ -254,7 +273,18 @@ void draw_cone_tri(void) {
  * Uses GL's vertex arrays, index arrays, color arrays, etc.
  */
 void draw_cone_tri_arrays(void) {
-	/* ADD YOUR CODE HERE */
+  int num_indices = sizeof(cone_indices) / sizeof(GLuint);
+
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
+
+  glVertexPointer(3, GL_FLOAT, 0, cone_vertices);
+  glColorPointer(3, GL_FLOAT, 0, cone_colors);
+  glDrawElements(GL_TRIANGLES, num_indices,
+          GL_UNSIGNED_INT, cone_indices);
+
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
 
 }
 
@@ -274,7 +304,6 @@ void draw_cone_tri_arrays(void) {
  */
 void draw_cone_tri_calc(double height, double radius, int base_tri) {
 	/* ADD YOUR CODE HERE */
-
 }
 
 /* Draw the various vrml scenes */
@@ -317,38 +346,12 @@ void draw_free_scene(void) {
 
 /* Prints to stdout the current display mode */
 void print_disp_mode( void ) {
-    switch (disp_mode) {
-        case DM_CUBE_GLUT:
-            printf("Display Mode: Cube using glut\n");
-            break;
-        case DM_CUBE_QUAD:
-            printf("Display Mode: Cube using quadrilaterals\n");
-            break;
-        case DM_CUBE_QUAD_ARRAYS:
-            printf("Display Mode: Cube using quadrilateral arrays\n");
-            break;
-        case DM_CONE_GLUT:
-            printf("Display Mode: Cone using glut\n");
-            break;
-        case DM_CONE_TRI:
-            printf("Display Mode: Cone using triangles\n");
-            break;
-        case DM_CONE_TRI_ARRAYS:
-            printf("Display Mode: Cone using triangle arrays\n");
-            break;
-        case DM_CONE_TRI_CALC:
-            printf("Display Mode: Cone using calculated triangles\n");
-			break;
-        case DM_VRML:
-            printf("Display Mode: VRML objects\n");
-            break;
-        case DM_FREE_SCENE:
-            printf("Display Mode: Freeform scene\n");
-            break;
-        default:
-			printf("Warning: unknown display mode\n");
-            break;
-    }
+  if(disp_mode < 0 or disp_mode >= DM_MAX){
+    cout << "Warning: unknown display mode" << endl;
+    return;
+  }
+  
+  cout << "Display mode: " << modeStrings[disp_mode] << endl;
 }
 
 
@@ -363,5 +366,4 @@ void print_disp_style( void ) {
 	}
 }
 
-/* end of drawing.c */
-
+// end of drawing.c 
