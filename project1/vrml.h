@@ -17,9 +17,11 @@
 
 /* The current vermal object */
 extern int vr_object;
+extern int disp_style;
 
 
 /* Function Declarations */
+// void draw_vrml(GLfloat[], GLint[], int);
 void draw_vrml_cube(void);
 void draw_vrml_dodecahedron(void);
 void draw_vrml_icosahedron(void);

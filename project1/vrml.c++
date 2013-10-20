@@ -155,51 +155,53 @@ GLint v_pyramid_indices[] = {
 	7, 1, 5, -1,
 	1, 3, 5, -1,
 };
-
-const string vrStrings[] = {"cube", "dodecahedron", 
-  "icosahedron", "pyramid"};
   
 /*
  * ADD YOUR FUNCTION DEFINITIONS HERE.
  * See vrml.h for a list of suggested functions.
  */
 
-
-void draw_vrml_cube(void){
-  int num_indices = sizeof(v_cube_indices) / sizeof(GLint);
+void draw_vrml(GLfloat vertices[], GLint indices[], int num_indices){
+  int mode = disp_style ? GL_LINE_LOOP : GL_POLYGON;
   glColor3f (1 , 1, 0);
   
   for (int i = 0; i < num_indices; ++i) {
-    glBegin(GL_LINE_LOOP);
-    	while(v_cube_indices[i] != -1){
-    		
+    glBegin(mode);
+    	while(indices[i] != -1){
 		    for(int j = 0; j < 3; ++j){
-		      int index = v_cube_indices[i] * 3;
-		      glVertex3fv(&(v_cube_vertices[index]) );
+		      int index = indices[i] * 3;
+		      glVertex3fv(&(vertices[index]) );
 		    }
     		++i;
     	}
     glEnd();
   }
-	
+}
+
+void draw_vrml_cube(void){
+  int num_indices = sizeof(v_cube_indices) / sizeof(GLint);
+  draw_vrml(v_cube_vertices, v_cube_indices, num_indices);
 }
 
 void draw_vrml_dodecahedron(void){
-	
-	
+  int num_indices = sizeof(v_dodeca_indices) / sizeof(GLint);
+  draw_vrml(v_dodeca_vertices, v_dodeca_indices, num_indices);
 }
 
 void draw_vrml_icosahedron(void){
-	
-	
+  int num_indices = sizeof(v_icosa_indices) / sizeof(GLint);
+  draw_vrml(v_icosa_vertices, v_icosa_indices, num_indices);
 }
 
 void draw_vrml_pyramid(void){
-	
-	
+  int num_indices = sizeof(v_pyramid_indices) / sizeof(GLint);
+  draw_vrml(v_pyramid_vertices, v_pyramid_indices, num_indices);
 }
 
 /* Prints to stdout the current vr object */
+const string vrStrings[] = {"cube", "dodecahedron", 
+  "icosahedron", "pyramid"};
+
 void print_vrml_object( void ) {
   if(vr_object < 0 or vr_object >= VR_MAX){
     cout << "Warning: unknown display mode" << endl;
