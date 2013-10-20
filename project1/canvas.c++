@@ -43,8 +43,6 @@ int vr_object;
 const int win_width = 500;
 const int win_height = 500;
 
-double r = 1.0;
-
 /* The dimensions of the viewing frustum */
 GLfloat fleft   = -1.0;
 GLfloat fright  =  1.0;
@@ -60,7 +58,7 @@ GLfloat zoomFactor = 1.0;
 // function look up table mapping drawing modes to respective functions
 const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad, 
 		draw_cube_quad_arrays, draw_cone_glut, draw_cone_tri, draw_cone_tri_arrays, 
-		NULL, draw_vrml, draw_free_scene};
+		draw_cone_tri_calc, draw_vrml, draw_free_scene};
 
 /* Constants for specifying the 3 coordinate axes */
 #define X_AXIS			0
@@ -79,8 +77,13 @@ const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad,
  */
 void myInit (int argc, char **argv) {
 	/* Set the default display mode and style */
-	disp_mode = DM_CONE_GLUT;
+	disp_mode = DM_CONE_TRI_CALC;
 	disp_style = DS_WIRE;
+	
+
+	height = 2;
+	radius = 1;
+	base_tri = 3;
 
 	/* Set up a black background */
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -94,7 +97,6 @@ void myInit (int argc, char **argv) {
  * helper functions may be called.
  */
 void myDisplay (void) {
-
 	glEnable(GL_DEPTH_TEST);	/* Use the Z - buffer for visibility */
 	glMatrixMode(GL_MODELVIEW);	/* All matrix operations are for the model */
 
@@ -102,14 +104,8 @@ void myDisplay (void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	assert(disp_mode >= 0 and disp_mode < DM_MAX);
-	if(disp_mode == DM_CONE_TRI_CALC)
-		// * NOTE
-		// * ----
-		// * This call will need to be changed to use the user-specified
-		// * parameters.  Right now, hard coded parameters are used.
-		draw_cone_tri_calc(0.0, 0.0, 0);
-	else
-		functionTable[disp_mode]();
+	
+	functionTable[disp_mode]();		// call rendering function
 
 	glFlush();	/* Flush all executed OpenGL ops finish */
 
@@ -332,21 +328,40 @@ void myKeyHandler(unsigned char ch, int x, int y) {
 			myResize(win_width, win_height);
 			printf("Window set to default size.\n");
 			break;
-
 		case 't':
 			performanceTest();
 			break;
+		// for draw_cone_tri_calc
 		case 'I':
-			r += .1;
-			cout << "r set to " << r << " (calculated triangulation only)" << endl;
+			radius += .1;
+			cout << "radius set to " << radius << " (calculated triangulation only)" << endl;
 			break;
 		case 'i':
-			r -= .1;
-			cout << "r set to " << r << " (calculated triangulation only)" << endl;
+			radius -= .1;
+			if(radius < .1)
+				radius = .1;
+			cout << "radius set to " << radius << " (calculated triangulation only)" << endl;
 			break;
-// r - Initially set to 1.0.  Set 'I' to increase r by 0.1, and set 'i' to decrease r by 0.1.  Your program must make sure that r is kept greater than or equal to 0.1.
-// h - Initially set to 1.0.  Set 'O' to increase h by 0.1, and set 'o' to decrease h by 0.1.  Your program must make sure that h is kept greater than or equal to 0.1.
-// n - Initially set to 8.  Set 'P' to increase n by 1 and set 'p' to decrease n by 1.  Your program must make sure that n is kept greater than or equal to 3.
+		case 'O':
+			height += .1;
+			cout << "height set to " << height << " (calculated triangulation only)" << endl;
+			break;
+		case 'o':
+			height -= .1;
+			if(height < .1)
+				height = .1;
+			cout << "height set to " << height << " (calculated triangulation only)" << endl;
+			break;
+		case 'P':
+			base_tri += 1;
+			cout << "base_tri set to " << base_tri << " (calculated triangulation only)" << endl;
+			break;
+		case 'p':
+			base_tri -= 1;
+			if(base_tri < 3)
+				base_tri = 3;
+			cout << "base_tri set to " << base_tri << " (calculated triangulation only)" << endl;
+			break;
 
 		case 'q':
 			/* Quit with exit code 0 */
@@ -403,7 +418,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(myKeyHandler);
 	glutMouseFunc(myMouseButton);
 	glutMotionFunc(myMouseMotion);
-	if(DEBUG) cerr << "BOOYAKASHA  = " << sizeof(float) << endl;
+	// if(DEBUG) cerr << "BOOYAKASHA  = " << sizeof(float) << endl;
 	// if(DEBUG)fprintf(stderr, "BOOYAKASHA  = %s\n", typeid(myKeyHandler));
 
 	/* User specific initialization */

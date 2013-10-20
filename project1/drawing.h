@@ -20,17 +20,18 @@
 #define DM_FREE_SCENE           8
 #define DM_MAX                  9
 
-/* The current display mode */
-extern int disp_mode;
-
-
 /* Styles of drawing glut objects, either solid or wire-frame */
 #define DS_SOLID        0
 #define DS_WIRE         1
-
+ 
+/* The current display mode */
+extern int disp_mode;
 /* The current display style */
 extern int disp_style;
 
+extern double height;
+extern double radius;
+extern int base_tri;
 
 /* Function Declarations */
 void draw_cube_glut(void);
@@ -39,7 +40,7 @@ void draw_cube_quad_arrays(void);
 void draw_cone_glut(void);
 void draw_cone_tri(void);
 void draw_cone_tri_arrays(void);
-void draw_cone_tri_calc(double height, double radius, int base_tri);
+void draw_cone_tri_calc(void);
 void draw_vrml(void);
 void draw_free_scene(void);
 void print_disp_mode(void);

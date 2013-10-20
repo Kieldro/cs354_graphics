@@ -14,7 +14,9 @@
 #include "drawing.h"
 #include "vrml.h"
 
-#include <stdio.h>
+#include <cstdio>
+#include <cmath>
+#include <algorithm>
 
 const string modeStrings[] = {"Cube using glut", "Cube using quadrilaterals", 
   "Cube using quadrilateral arrays", "Cone using glut", 
@@ -26,6 +28,10 @@ int disp_mode;
 
 /* The current display style */
 int disp_style;
+
+double height;
+double radius;
+int base_tri;
 
 /***********************************************************
  * Begin Cube Data
@@ -214,7 +220,6 @@ void draw_cube_quad_arrays(void) {
 
   glDisableClientState(GL_COLOR_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
-  if(DEBUG) cerr << "BOOYAKASHA  = " << 11 << endl;
 }
 
 /*
@@ -222,7 +227,6 @@ void draw_cube_quad_arrays(void) {
  * frame modes, based on the value of the variable disp_style.
  */
 void draw_cone_glut(void) {
-  // if(DEBUG) cerr << "BOOYAKASHA  = " << 7 << endl;
   float radius = 1;
   float height = 2;
   int slices = 8;
@@ -302,8 +306,36 @@ void draw_cone_tri_arrays(void) {
  * The final triangulation of the cone surface should include
  * exactly 2 * BASE_TRI.
  */
-void draw_cone_tri_calc(double height, double radius, int base_tri) {
-	/* ADD YOUR CODE HERE */
+void draw_cone_tri_calc(void) {
+  if(DEBUG) cerr << "DRAW CONE! " << ' ' << endl;
+  glColor3f(0.0f, 0.0f, 1.0f);    // blue
+  
+  glBegin(GL_TRIANGLES);
+    double x, y = 0, z, theta;
+    GLdouble vertex1[] = {radius, y, 0};
+    
+    for (int n = 1; n <= base_tri; ++n) {
+      theta = 2 * M_PI / base_tri * n;   // in radians
+      x = cos(theta) * radius;
+      // y = 0;
+      z = sin(theta) * radius;
+      GLdouble vertex2[] = {x, y, z};
+      if(DEBUG) cerr << "n  = " << n << endl;
+      if(DEBUG) cerr << "theta  = " << theta/(2*M_PI)*360 << endl;
+      
+      char str[64];
+      // sprintf(str, "vertex1 = (%f, %f, %f)", vertex1[0], vertex1[1], vertex1[2]);
+      // if(DEBUG) cerr << str << endl;
+      sprintf(str, "vertex2 = (%f, %f, %f)", vertex2[0], vertex2[1], vertex2[2]);
+      if(DEBUG) cerr << str << endl;
+      
+      glVertex3d(0, y, 0);
+      glVertex3dv(vertex1);
+      glVertex3dv(vertex2);
+      std::copy(vertex2, vertex2 + 3, vertex1);
+    }
+    
+  glEnd();
 }
 
 /* Draw the various vrml scenes */

@@ -17,10 +17,8 @@ UTF byte order mark <feff> caused a delay with installing glut. :set list in vim
 sudo apt-get install freeglut3-dev  // to install glut
 
 questions:
--glutKeyboardFunc(myKeyHandler); // is this a first class function?
 -include folder?
-- UNAME := $(shell uname) // where is shell defined?
-
+- extern?
 
 performance tests:
 
