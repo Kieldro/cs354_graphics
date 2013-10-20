@@ -16,7 +16,7 @@
 
 #include <cstdio>
 #include <cmath>
-#include <algorithm>
+// #include <algorithm>
 
 const string modeStrings[] = {"Cube using glut", "Cube using quadrilaterals", 
   "Cube using quadrilateral arrays", "Cone using glut", 
@@ -32,6 +32,7 @@ int disp_style;
 double height;
 double radius;
 int base_tri;
+
 
 /***********************************************************
  * Begin Cube Data
@@ -261,12 +262,12 @@ void draw_cone_tri(void) {
 
     glBegin(GL_TRIANGLES);
 
-    /* All arguments here are pointers */
-    for(int j = 0; j < 3; ++j){
-      int index = cone_indices[i + j] * 3;
-      glColor3fv (&(cone_colors  [index]) );
-      glVertex3fv(&(cone_vertices[index]) );
-    }
+      /* All arguments here are pointers */
+      for(int j = 0; j < 3; ++j){
+        int index = cone_indices[i + j] * 3;
+        glColor3fv (&(cone_colors  [index]) );
+        glVertex3fv(&(cone_vertices[index]) );
+      }
     glEnd();
   }
 
@@ -307,42 +308,42 @@ void draw_cone_tri_arrays(void) {
  * exactly 2 * BASE_TRI.
  */
 void draw_cone_tri_calc(void) {
-  if(DEBUG) cerr << "DRAW CONE! " << ' ' << endl;
-  glColor3f(0.0f, 0.0f, 1.0f);    // blue
+  // if(DEBUG) cerr << "DRAW CONE! " << ' ' << endl;
+  double x, y = -height/2, z, theta;
+  double centers[] = {y, -y};
   
-  glBegin(GL_TRIANGLES);
-    double x, y = 0, z, theta;
-    GLdouble vertex1[] = {radius, y, 0};
-    
-    for (int n = 1; n <= base_tri; ++n) {
-      theta = 2 * M_PI / base_tri * n;   // in radians
-      x = cos(theta) * radius;
-      // y = 0;
-      z = sin(theta) * radius;
-      GLdouble vertex2[] = {x, y, z};
-      if(DEBUG) cerr << "n  = " << n << endl;
-      if(DEBUG) cerr << "theta  = " << theta/(2*M_PI)*360 << endl;
+  // draw base
+  for(double c: centers){
+    glBegin(GL_TRIANGLE_FAN);
+      glColor3f(0.0f, 0.0f, 1.0f);    // blue
+      glVertex3d(0, c, 0);    // center of fan
       
-      char str[64];
-      // sprintf(str, "vertex1 = (%f, %f, %f)", vertex1[0], vertex1[1], vertex1[2]);
-      // if(DEBUG) cerr << str << endl;
-      sprintf(str, "vertex2 = (%f, %f, %f)", vertex2[0], vertex2[1], vertex2[2]);
-      if(DEBUG) cerr << str << endl;
-      
-      glVertex3d(0, y, 0);
-      glVertex3dv(vertex1);
-      glVertex3dv(vertex2);
-      std::copy(vertex2, vertex2 + 3, vertex1);
-    }
-    
-  glEnd();
+      glColor3f(0.0f, 0.0f, .5f);    // create a gradient toward center
+      for (int n = 0; n <= base_tri; ++n) {
+        theta = 2 * M_PI / base_tri * n;   // in radians
+        x = cos(theta) * radius;
+        z = sin(theta) * radius;
+        // GLdouble vertex[] = {x, y, z};
+        // if(DEBUG) cerr << "n  = " << n << endl;
+        // if(DEBUG) cerr << "theta  = " << theta/(2*M_PI)*360 << endl;
+        
+        // char str[64];
+        // sprintf(str, "vertex = (%f, %f, %f)", vertex[0], vertex[1], vertex[2]);
+        // if(DEBUG) cerr << str << endl;
+        
+        glVertex3d(x, y, z);
+      }
+    glEnd();
+  }
 }
 
 /* Draw the various vrml scenes */
-void draw_vrml(void) {
-	/* ADD YOUR CODE HERE */
-	/* NOTE: you should be calling a function or functions in vrml.c */
+const vector<void(*)(void)> vrmlFunctions = {draw_vrml_cube, 
+  draw_vrml_dodecahedron, draw_vrml_icosahedron, draw_vrml_pyramid};
 
+void draw_vrml(void) {
+	/* NOTE: you should be calling a function or functions in vrml.c++ */
+  vrmlFunctions[vr_object]();
 }
 
 
@@ -375,7 +376,6 @@ void draw_free_scene(void) {
 	glPopMatrix();
 }
 
-
 /* Prints to stdout the current display mode */
 void print_disp_mode( void ) {
   if(disp_mode < 0 or disp_mode >= DM_MAX){
@@ -385,7 +385,6 @@ void print_disp_mode( void ) {
   
   cout << "Display mode: " << modeStrings[disp_mode] << endl;
 }
-
 
 /* Prints to stdout the current display style */
 void print_disp_style( void ) {

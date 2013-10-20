@@ -3,15 +3,28 @@ Project 2 Individual Written Questions
 Name: Ian Buitrago
 Email Address: kieldro@gmail.com
 
-1.
+1. Are the following operations commutative with each other? Give an example for each showing why or why not.
 
+  a. Two 3D translations
 
-2.
+  b. A 3D translation and a 3D rotation
 
+  c. Two 2D rotations
 
-3.
+2. You are in charge of designing the following software applications. Discuss which projection(s) (orthographic and/or perspective) you would use for each and why.
 
+  a. A first-person shooter game
 
-4.
+  b. A CAD package for use in designing airplane parts
 
+  c. An architectural design package
 
+  d. A iPod navigation system for hang glider pilots
+
+3. Show that any sequence of rotations and translations can be replaced by a single rotation about the origin followed by a translation. Show that this is also equivalent to a translation then rotation about the origin. Discuss the difference between this question and 1b.
+
+4. Given four ordered 3D vertices, how would you determine whether the polygon that they define is planar?
+
+5. The earth has an axial tilt of about 23.5 degrees. It is also approximately 90 million miles from the sun. Given that the earth completes an orbit every 365 days and a rotation every 24 hours, find a single transformation matrix that will model the earth's movement over the course of 1 hour. Show your work.
+
+6. Find a set of productions to generate the Sierpinski gasket by starting with a single equilateral triangle.

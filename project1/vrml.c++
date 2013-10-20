@@ -6,14 +6,13 @@
  *
  * Starter code for Project 1.
  *
- * Group Members: <FILL IN>
+ * Group Members: Ian Buitrago
  */
 
 #include "common.h"
+#include "vrml.h"
 
 #include <stdio.h>
-
-#include "vrml.h"
 
 /*
  * Note that in VRML, the face indices have a -1 to represent
@@ -157,12 +156,58 @@ GLint v_pyramid_indices[] = {
 	1, 3, 5, -1,
 };
 
-
+const string vrStrings[] = {"cube", "dodecahedron", 
+  "icosahedron", "pyramid"};
+  
 /*
  * ADD YOUR FUNCTION DEFINITIONS HERE.
  * See vrml.h for a list of suggested functions.
  */
 
 
-/* end of vrml.c */
+void draw_vrml_cube(void){
+  int num_indices = sizeof(v_cube_indices) / sizeof(GLint);
+  glColor3f (1 , 1, 0);
+  
+  for (int i = 0; i < num_indices; ++i) {
+    glBegin(GL_LINE_LOOP);
+    	while(v_cube_indices[i] != -1){
+    		
+		    for(int j = 0; j < 3; ++j){
+		      int index = v_cube_indices[i] * 3;
+		      glVertex3fv(&(v_cube_vertices[index]) );
+		    }
+    		++i;
+    	}
+    glEnd();
+  }
+	
+}
+
+void draw_vrml_dodecahedron(void){
+	
+	
+}
+
+void draw_vrml_icosahedron(void){
+	
+	
+}
+
+void draw_vrml_pyramid(void){
+	
+	
+}
+
+/* Prints to stdout the current vr object */
+void print_vrml_object( void ) {
+  if(vr_object < 0 or vr_object >= VR_MAX){
+    cout << "Warning: unknown display mode" << endl;
+    return;
+  }
+  
+  cout << "VRML object: " << vrStrings[vr_object] << endl;
+}
+
+/* end of vrml.c++ */
 

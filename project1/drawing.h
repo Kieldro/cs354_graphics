@@ -44,6 +44,7 @@ void draw_cone_tri_calc(void);
 void draw_vrml(void);
 void draw_free_scene(void);
 void print_disp_mode(void);
+void print_vrml_object(void);
 void print_disp_style(void);
 
 #endif	/* _DRAWING_H_ */

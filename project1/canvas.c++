@@ -77,13 +77,13 @@ const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad,
  */
 void myInit (int argc, char **argv) {
 	/* Set the default display mode and style */
-	disp_mode = DM_CONE_TRI_CALC;
+	disp_mode = DM_VRML;
 	disp_style = DS_WIRE;
+	vr_object = VR_CUBE;
 	
-
 	height = 2;
 	radius = 1;
-	base_tri = 3;
+	base_tri = 6;
 
 	/* Set up a black background */
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -279,15 +279,23 @@ void myKeyHandler(unsigned char ch, int x, int y) {
 
 		case 'd':
 			/* Cycle through the various display modes */
-			disp_mode = (disp_mode + 1) % DM_MAX;
+			disp_mode += 1;
+			disp_mode %= DM_MAX;
 			print_disp_mode();
 			break;
 
 		case 'D':
 			/* Cycle through the various display modes backwards */
 			/* By adding DM_MAX, the args to "%" will never be negative */
-			disp_mode = (disp_mode + DM_MAX - 1) % DM_MAX;
+			disp_mode += DM_MAX - 1;
+			disp_mode %= DM_MAX;
 			print_disp_mode();
+			break;
+		// vrml
+		case 'v':
+			vr_object += 1;
+			vr_object %= VR_MAX;
+			print_vrml_object();
 			break;
 
 		case ',':
