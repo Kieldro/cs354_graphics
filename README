@@ -25,7 +25,17 @@ questions:
 - extern?
 
 performance tests:
+CUBE_GLUT - wire  - 17.92 s   
+CUBE_GLUT - solid - 17.92 s      
+CUBE_QUAD       - 17.92 s
+CUBE_QUAD_ARRAYS = - 17.93 s
+CONE_GLUT - wire  = - 17.92 s
+CONE_GLUT - solid = - 17.93 s
+CONE_TRI        = - 17.92 s
+CONE_TRI_ARRAYS = - 17.93 s
+CONE_TRI_CALC       = - 17.92 s
 
+All modes ran at the same speed. There seems to be no significant performance differences between implementations. Thus, glut functions will allow for more concise and readable code.
 
 =========
 PROJECT 2
