@@ -77,7 +77,7 @@ const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad,
  */
 void myInit (int argc, char **argv) {
 	/* Set the default display mode and style */
-	disp_mode = DM_VRML;
+	disp_mode = DM_FREE_SCENE;
 	disp_style = DS_WIRE;
 	vr_object = VR_CUBE;
 	

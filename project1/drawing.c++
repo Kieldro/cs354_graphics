@@ -349,7 +349,6 @@ void draw_vrml(void) {
 
 /* Draws a freeform scene */
 void draw_free_scene(void) {
-	/* ADD YOUR CODE HERE */
 	/* NOTE: Modify or remove the existing code in this func, as necessary */
 
 	/*
@@ -365,12 +364,12 @@ void draw_free_scene(void) {
 	 * Draw a green cube at an offset of (0, 1, 0) from the center of
 	 * the torus.  Note that the glPushMatrix remembers the current
 	 * drawing position (the center of the torus), the glTranslatef
-	 * translates the drawing point by and offset, and the
+	 * translates the drawing point by an offset, and the
 	 * glPopMatrix restores the drawing point to the center of
 	 * the torus.
 	 */
 	glPushMatrix();
-	glTranslatef(1.0f, 0.0f, 1.0f);		/* the drawing offset */
+	// glTranslatef(1.0f, 0.0f, 1.0f);		/* the drawing offset */
 	glColor3f(0.0f, 1.0f, 0.0f);		/* green */
 	glutWireCube(1.0f);
 	glPopMatrix();

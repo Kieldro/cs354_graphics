@@ -24,6 +24,7 @@
 #define DS_SOLID        0
 #define DS_WIRE         1
  
+ // external variables: declared and defined in other files.
 /* The current display mode */
 extern int disp_mode;
 /* The current display style */
