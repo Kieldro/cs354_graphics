@@ -23,6 +23,7 @@ sudo apt-get install freeglut3-dev  // to install glut
 questions:
 -include folder?
 - extern?
+- draw horizontal torus?
 
 performance tests:
 CUBE_GLUT - wire  - 17.92 s   
@@ -52,4 +53,8 @@ PROJECT 2
  * Group Members: Ian Buitrago
  * Email Addresses: kieldro@gmail.com
  */
+
+10-22-2013
+CS 354: Computer Graphics 
+Project 2: Fractal Plants
 

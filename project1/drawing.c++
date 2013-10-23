@@ -308,7 +308,6 @@ void draw_cone_tri_arrays(void) {
  * exactly 2 * BASE_TRI.
  */
 void draw_cone_tri_calc(void) {
-  // if(DEBUG) cerr << "DRAW CONE! " << ' ' << endl;
   double x, y = -height/2, z, theta;
   double centers[] = {y, -y};
   
@@ -349,30 +348,69 @@ void draw_vrml(void) {
 
 /* Draws a freeform scene */
 void draw_free_scene(void) {
-	/* NOTE: Modify or remove the existing code in this func, as necessary */
+  /* NOTE: Modify or remove the existing code in this func, as necessary */
 
-	/*
-	 * Draw a red torus.
-	 *
-	 * glutWireTorus args: (inner radius, outer radius,
-	 * sides per radial section, # of radial sections)
-	 */
-	glColor3f(1.0f, 0.0f, 0.0f);		/* red */
-	glutWireTorus(0.1, 0.4, 10, 20);
+  /*
+   * Draw a red torus.
+   *
+   * glutWireTorus args: (inner radius, outer radius,
+   * sides per radial section, # of radial sections)
+   */
+  // glColor3f(1.0f, 0.0f, 0.0f);   /* red */
+  // glutWireTorus(0.1, 0.4, 10, 20);
 
-	/*
-	 * Draw a green cube at an offset of (0, 1, 0) from the center of
-	 * the torus.  Note that the glPushMatrix remembers the current
-	 * drawing position (the center of the torus), the glTranslatef
-	 * translates the drawing point by an offset, and the
-	 * glPopMatrix restores the drawing point to the center of
-	 * the torus.
-	 */
-	glPushMatrix();
-	// glTranslatef(1.0f, 0.0f, 1.0f);		/* the drawing offset */
-	glColor3f(0.0f, 1.0f, 0.0f);		/* green */
-	glutWireCube(1.0f);
-	glPopMatrix();
+  /*
+   * Draw a green cube at an offset of (0, 1, 0) from the center of
+   * the torus.  Note that the glPushMatrix remembers the current
+   * drawing position (the center of the torus), the glTranslatef
+   * translates the drawing point by an offset, and the
+   * glPopMatrix restores the drawing point to the center of
+   * the torus.
+   */
+  // if(DEBUG) cerr << "DRAW FREE " << ' ' << endl;
+  const int length = 13;
+  const double size = .2;
+  void(*glutCube)(GLdouble) = disp_style ? glutWireCube : glutSolidCube;
+  
+  glColor3f(0.0f, 1.0f, 0.0f);    /* green */
+  glPushMatrix();
+  glTranslatef(size * -length / 2 + .5*size, .5*size, size * -length / 2  + .5*size);   /* center the drawing */
+  for(int l = length; l > 0; l -= 2){
+    glPushMatrix();
+    // layer
+    for(int i = 0; i < l; ++i){    // columns
+      glPushMatrix();
+      for(int j = 0; j < l; ++j){    // rows
+        glutCube(size);
+        glTranslatef(size, 0, 0);   /* the drawing offset */
+      }
+      glPopMatrix();
+      glTranslatef(0, 0, size);   /* the drawing offset */
+    }
+    glPopMatrix();
+    glTranslatef(size, size, size);
+  }
+  glPopMatrix(); 
+  
+  // draw teapot
+  glColor3f(0.0f, 0, 1.0f);
+  glPushMatrix();
+  glTranslatef(0, (1 + length / 2.0) * size, 0);
+  glutWireTeapot(.1);
+  glPopMatrix();
+  
+  
+  // draw torus
+  glColor3f(1.0f, 0, 0);
+  glPushMatrix();
+  glutWireTorus(0.1, 2, 10, 80);
+  glPopMatrix();
+  
+  // draw white center point sphere
+  glColor3f(1.0f, 1, 1.0f);
+  glPushMatrix();
+  glutSolidSphere(.01, 6, 6);
+  glPopMatrix();
 }
 
 /* Prints to stdout the current display mode */

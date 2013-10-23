@@ -84,11 +84,14 @@ void myInit (int argc, char **argv) {
 	height = 2;
 	radius = 1;
 	base_tri = 6;
+	
 
 	/* Set up a black background */
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
 	resetCamera();
+	// if(DEBUG)
+	glRotatef(15, 1.0, 0, 0);
 }
 
 
@@ -438,4 +441,4 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-/* end of canvas.c */
+/* end of canvas.c++ */
