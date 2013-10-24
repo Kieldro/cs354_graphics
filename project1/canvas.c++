@@ -55,11 +55,6 @@ GLfloat zFar    = -7.0;
 /* Global zoom factor.  Modified by user input. Initially 1.0 */
 GLfloat zoomFactor = 1.0; 
 
-// function look up table mapping drawing modes to respective functions
-const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad, 
-		draw_cube_quad_arrays, draw_cone_glut, draw_cone_tri, draw_cone_tri_arrays, 
-		draw_cone_tri_calc, draw_vrml, draw_free_scene};
-
 /* Constants for specifying the 3 coordinate axes */
 #define X_AXIS			0
 #define Y_AXIS			1
@@ -77,7 +72,7 @@ const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad,
  */
 void myInit (int argc, char **argv) {
 	/* Set the default display mode and style */
-	disp_mode = DM_FREE_SCENE;
+	disp_mode = DM_CUBE_GLUT;
 	disp_style = DS_WIRE;
 	vr_object = VR_CUBE;
 	
@@ -90,10 +85,14 @@ void myInit (int argc, char **argv) {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
 	resetCamera();
-	// if(DEBUG)
-	glRotatef(15, 1.0, 0, 0);
+	if(DEBUG) glRotatef(15, 1.0, 0, 0);
 }
 
+
+// function look up table mapping drawing modes to respective functions
+const vector<void(*)(void)> functionTable = {draw_cube_glut, draw_cube_quad, 
+		draw_cube_quad_arrays, draw_cone_glut, draw_cone_tri, draw_cone_tri_arrays, 
+		draw_cone_tri_calc, draw_vrml, draw_free_scene};
 
 /*
  * The main drawing routine.  Based on the current display mode, other

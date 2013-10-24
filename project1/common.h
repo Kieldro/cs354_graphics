@@ -26,7 +26,7 @@ using std::vector;
 using std::string;
 
 // macros
-#define DEBUG   1
+#define DEBUG   0
 
 
 #endif

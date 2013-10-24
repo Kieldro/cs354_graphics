@@ -6,12 +6,53 @@ Email Address:	kieldro@gmail.com
 1.  You have an array of vertices. What would you need to do to produce an object representation using vertex indices? How would the original array change? What additional data structures would you need?
 
 2.  How many matrix modes are there in OpenGL and what are their use?
+GL_MODELVIEW: Applies subsequent matrix operations to the modelview matrix stack.
+GL_PROJECTION: Applies subsequent matrix operations to the projection matrix stack.
+GL_TEXTURE: Applies subsequent matrix operations to the texture matrix stack.
+GL_COLOR: Applies subsequent matrix operations to the color matrix stack.
 
 3.  I want 3 views of the same scene, each taking up 1/4 of my screen. These three views should show the front, side and top views of the object. Describe in words what needs to be done with the viewport and camera to accomplish this. How does this affect the viewing frustum?
+You would need to make three separate calls to glViewPort, each of which will specify which quarter of
+the screen the next rendering is going to happen. Set up a frustum which covers the scene. Then, for
+each viewport, set up the camera using gluLookAt so that it is pointing to the center of the scene from
+the correct direction. If you use orthographic projection, then the frustum would be the same (it would
+be the same volume but the notion of left, right, near, far etc. would be changed/remapped).
 
 4.  Describe when and why you would use a single frame buffer. Then describe when and why you would use a double frame buffer.
+Double buffering helps prevent anomalies in the rendered image by ensuring that only completed
+scenes are displayed. So when image quality is important and specially when the scene is not static,
+then double buffering should be used.
+The only reason for choosing single frame buffer is if there is insufficient memory for storing two
+buffers.
 
 5.  Describe a reasonable alternative to the line equation representation y=mx+b for use in displaying a line segment on the screen. What are its advantages over ax+by+c=0?
+Use a parametric representation of a line. For example,
+x(t) = (1 - t) * x0 + t * x1
+y(t) = (1 - t) * y0 + t * y1
+or
+P(u) = (1-t) P0 + t * P1
+The advantage of the parametric form is that it is not affected by the slope of the line.
 
 6.  Suppose I want to transform as follows: translate (2,3,1), then rotate 225 degrees about Y, and finally translate (-4,1,0). What will my final transformation matrix be?
-
+T1 =
+1 0 0 2
+0 1 0 3
+0 0 1 1
+0 0 0 1
+The rotation matrix is
+R =
+cos(225) 0 sin(225) 0
+0 1 0 0
+-sin(225) 0 cos(225) 0
+0 0 0 1
+The second translation matrix is
+T2 =
+1 0 0 -4
+0 1 0 1
+0 0 1 0
+0 0 0 1
+The composite matrix is T2 * R * T1 which evaluates to = 
+cos(225) 0 sin(225) 2cos(225) + sin(225) - 4
+0 1 0 4
+-sin(225) 0 cos(225) cos9225) - 2sin(225)
+0 0 0 1

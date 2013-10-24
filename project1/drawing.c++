@@ -322,13 +322,6 @@ void draw_cone_tri_calc(void) {
         theta = 2 * M_PI / base_tri * n;   // in radians
         x = cos(theta) * radius;
         z = sin(theta) * radius;
-        // GLdouble vertex[] = {x, y, z};
-        // if(DEBUG) cerr << "n  = " << n << endl;
-        // if(DEBUG) cerr << "theta  = " << theta/(2*M_PI)*360 << endl;
-        
-        // char str[64];
-        // sprintf(str, "vertex = (%f, %f, %f)", vertex[0], vertex[1], vertex[2]);
-        // if(DEBUG) cerr << str << endl;
         
         glVertex3d(x, y, z);
       }

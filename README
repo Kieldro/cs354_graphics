@@ -38,6 +38,11 @@ CONE_TRI_CALC       = - 17.92 s
 
 All modes ran at the same speed. There seems to be no significant performance differences between implementations. Thus, glut functions will allow for more concise and readable code.
 
+Extra credit:
+-VRLM mode can display in wire or solid style.
+-draw_cone_tri_calc mode has a slight gradient
+-myDisplay function refactored
+
 =========
 PROJECT 2
 =========
