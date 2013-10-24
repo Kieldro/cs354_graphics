@@ -44,11 +44,12 @@ canvas: $(p1_HEADERS) $(p1_SRCS)
 
 turnin:
 	zip project1_code README Makefile $(p1_SRCS) $(p1_HEADERS)
-	turnin --submit muhibur cs354_project1_code project1_code
+	turnin --submit muhibur cs354_project1_code project1_code.zip
 	turnin --list muhibur cs354_project1_code
 	# turnin --verify muhibur cs354_project1_code
 
-turnin_written:	;	turnin --submit muhibur cs354_project1_written project1.txt
+turnin_written:
+	cd $(PROJECTDIR1) ; turnin --submit muhibur cs354_project1_written project1.txt
 	
 ###########################################################
 # Project 2
