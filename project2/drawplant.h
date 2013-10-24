@@ -1,7 +1,7 @@
 #ifndef _DRAWPLANT_H_
 #define _DRAWPLANT_H_
 
-/* Functions implemented in drawplant.cpp */
+/* Functions implemented in drawplant.c++ */
 
 void drawPlant(void);
 

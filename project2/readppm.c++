@@ -15,15 +15,16 @@
  * Using this routine is not mandatory.  It is intended to help you in case
  * you wish to use .ppm files as an Additional Feature.
  *
- * Group Members: <FILL IN>
+ * Group Members: Ian Buitrago
  */
 
 #ifdef _WIN32
-#include <windows.h>
+	#include <windows.h>
 #endif
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+ 
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "common.h"
 
