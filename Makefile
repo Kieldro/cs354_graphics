@@ -42,7 +42,11 @@ p1_HEADERS := $(wildcard $(PROJECTDIR1)/*.h)
 canvas: $(p1_HEADERS) $(p1_SRCS)
 	${CXX} ${CXXFLAGS} ${INCLUDE} -o canvas ${LIBDIR} $(p1_SRCS) ${LIBS}
 
-turnin:	;	turnin --submit muhibur cs354_project1_code README Makefile $(p1_SRCS) $(p1_HEADERS)
+turnin:
+	zip project1_code README Makefile $(p1_SRCS) $(p1_HEADERS)
+	turnin --submit muhibur cs354_project1_code project1_code
+	turnin --list muhibur cs354_project1_code
+	# turnin --verify muhibur cs354_project1_code
 
 turnin_written:	;	turnin --submit muhibur cs354_project1_written project1.txt
 	
