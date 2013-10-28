@@ -79,6 +79,7 @@ void display() {
 
 /* Handle user input */
 void keyHandler(unsigned char ch, int x, int y) {
+  int increment = 5;
   switch(ch) {
     // case 'c':
     //   resetCamera();
@@ -86,28 +87,28 @@ void keyHandler(unsigned char ch, int x, int y) {
     //   break;
 
     case ',':
-      cerr << "BOOYAKASHA!" << endl;
-      rotateCamera(5, X_AXIS);
+      // cerr << "BOOYAKASHA!" << endl;
+      rotateCamera(increment, X_AXIS);
       break;
 
     case '<':
-      rotateCamera(-5, X_AXIS);
+      rotateCamera(-increment, X_AXIS);
       break;
 
     case '.':
-      rotateCamera(5, Y_AXIS);
+      rotateCamera(increment, Y_AXIS);
       break;
 
     case '>':
-      rotateCamera(-5, Y_AXIS);
+      rotateCamera(-increment, Y_AXIS);
       break;
 
     case '/':
-      rotateCamera(5, Z_AXIS);
+      rotateCamera(increment, Z_AXIS);
       break;
 
     case '?':
-      rotateCamera(-5, Z_AXIS);
+      rotateCamera(-increment, Z_AXIS);
       break;
 
     // case '+':
